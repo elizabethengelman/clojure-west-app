@@ -1,31 +1,28 @@
 (ns clojure-west-app.db
-  (:require [clojure.java.jdbc :as sql]))
+  (:require [datomic.api :as d]))
 
-(def db-spec {:classname "org.h2.Driver"
-              :subprotocol "h2:file"
-              :subname "db/clojure-west-app"})
+(def base-dev-uri "datomic:dev://localhost:4334")
 
-(defn add-location-to-db
-  [x y]
-  (let [results (sql/with-connection db-spec
-                  (sql/insert-record :locations
-                                     {:x x :y y}))]
-    (assert (= (count results) 1))
-    (first (vals results))))
+(defn db-uri [db-name]
+  (str base-dev-uri "/" db-name))
 
-(defn get-xy
-  [loc-id]
-  (let [results (sql/with-connection db-spec
-                  (sql/with-query-results res
-                    ["select x, y from locations where id = ?" loc-id]
-                    (doall res)))]
-    (assert (= (count results) 1))
-    (first results)))
+(defn connection [db-name]
+  (d/connect (str base-dev-uri "/" db-name)))
 
-(defn get-all-locations
-  []
-  (let [results (sql/with-connection db-spec
-                  (sql/with-query-results res
-                    ["select id, x, y from locations"]
-                    (doall res)))]
-    results))
+(defn transact [connection data]
+  (d/transact connection data))
+
+(defn get-all-database-names []
+  (d/get-database-names (db-uri "*")))
+
+(defn create-database [db-name]
+  (d/create-database (db-uri db-name)))
+
+(def schema-map
+  (read-string (slurp "db//schema.edn")))
+
+(defn transact [db-name txn-data]
+  (d/transact (connection db-name) txn-data))
+
+(defn transact-schema [db-name]
+  (transact db-name schema-map))
