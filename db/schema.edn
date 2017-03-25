@@ -1,0 +1,31 @@
+;GROUP SCHEMA
+[{:db/id #db/id[:db.part/db]
+  :db/ident :group/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :group/member
+  :db/valueType :db.type/ref
+  :db/cardinality :db.cardinality/many
+  :db.install/_attribute :db.part/db}
+
+;USER SCHEMA
+ {:db/id #db/id[:db.part/db]
+  :db/ident :user/type
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db.install/_attribute :db.part/db}
+
+;ANIMAL SCHEMA
+
+ {:db/id #db/id[:db.part/db]
+  :db/ident :animal/name
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db.install/_attribute :db.part/db}
+ {:db/id #db/id[:db.part/db]
+  :db/ident :animal/type
+  :db/valueType :db.type/string
+  :db/cardinality :db.cardinality/one
+  :db.install/_attribute :db.part/db}]
