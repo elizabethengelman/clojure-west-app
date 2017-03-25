@@ -9,17 +9,17 @@
 (defn connection [db-name]
   (d/connect (str base-dev-uri "/" db-name)))
 
-(defn transact [connection data]
-  (d/transact connection data))
-
 (defn get-all-database-names []
   (d/get-database-names (db-uri "*")))
 
 (defn create-database [db-name]
   (d/create-database (db-uri db-name)))
 
+(defn delete-database [db-name]
+  (d/delete-database (db-uri db-name)))
+
 (def schema-map
-  (read-string (slurp "db//schema.edn")))
+  (read-string (slurp "db/schema.edn")))
 
 (defn transact [db-name txn-data]
   (d/transact (connection db-name) txn-data))
