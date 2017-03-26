@@ -40,15 +40,62 @@
        db-value
        groups))
 
+;(defn second-user->animals [user db-value]
+;  (let [groups (flatten (into [] (user->group user db-value)))]
+;    (groups->animals groups db-value)))
+
+;============================================
+;Iteration 2B: using rules in favor of a new query call for each piece
+;============================================
+(def user-type->group-rule
+  '[[(user-type->group ?user-type ?g)
+    [?u :user/type ?user-type]
+    [?g :group/member ?u]]])
+
+(def group->animal-rule
+  '[[(group->animal ?g ?a)
+    [?g :group/member ?a]
+    [?a :animal/name]]])
+
+(def user->animal ;not using this rulset in iteration 2b
+  '[[(user->animal ?user-type ?g ?a)
+     (user-group ?user-type ?g)
+     (group-animal ?g ?a)]])
+
+(def rules
+  (concat user-type->group-rule
+          group->animal-rule))
+
 (defn second-user->animals [user db-value]
-  (let [groups (flatten (into [] (user->group user db-value)))]
-    (groups->animals groups db-value)))
+  (d/q '[:find ?a
+         :in $ % ?user-type
+         :where
+         [?a :animal/type]
+         (group->animal ?g ?a)
+         (user-type->group ?user-type ?g)]
+       db-value
+       rules
+       (:user-type user)))
 
 ;============================================
 ;Iteration 3: adding another data shape (special client)
 ;============================================
-(defn special-user->animals [user db-value]
 
+;(def user->animal
+;  '[[(user->animal)
+;     [?a :animal/type]
+;     (user-group ?user-type)
+;     (group-animal ?g)]])
+
+  ;[[(special-user->animal ?user-email ?user-type)
+  ;  [?u :user/email ?user-email]
+  ;  [?u :user/assigned-animal ?a]]
+  ; [(special-user->animal ?user-email ?user-type)
+  ;  [?u :user/type ?user-type]
+  ;  [?g :group/member ?u]
+  ;  [?g :group/member ?a]
+  ;  [?a :animal/name]]]
+(defn special-user->animals [user db-value]
   (if (:user-email user)
     (d/q '[:find ?a
            :in $ ?user-email
