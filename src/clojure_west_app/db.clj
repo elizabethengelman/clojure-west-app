@@ -20,7 +20,8 @@
   (d/delete-database (db-uri db-name)))
 
 (def schema-map
-  (read-string (slurp "db/schema.edn")))
+  (into [] (concat (read-string (slurp "db/schema20170325142643521.edn"))
+                   (read-string (slurp "db/schema20170326142642520.edn")))))
 
 (defn transact [db-name txn-data]
   (d/transact (connection db-name) txn-data))

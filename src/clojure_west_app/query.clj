@@ -47,10 +47,19 @@
 ;============================================
 ;Iteration 3: adding another data shape (special client)
 ;============================================
+(defn special-user->animals [user db-value]
 
-;(defmulti user->animals (fn [user] (:custom-query user)))
-;(defmethod user->animals :special-client [user]
-;  "use the special-client query")
-;(defmethod user->animals :default [user]
-;  (d/q (default-query (:user-type user))
-;       (db-value)))
+  (if (:user-email user)
+    (d/q '[:find ?a
+           :in $ ?user-email
+           :where
+           [?u :user/email ?user-email]
+           [?u :user/assigned-animal ?a]]
+         db-value
+         (:user-email user))))
+
+(defmulti third-user->animals (fn [user db-value] (:custom-query user)))
+(defmethod third-user->animals :special-client [user db-value]
+  (special-user->animals user db-value))
+(defmethod third-user->animals :default [user db-value]
+  (second-user->animals user db-value))
