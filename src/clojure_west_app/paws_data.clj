@@ -21,6 +21,7 @@
 
    {:group/name "Public Visibility Group"
     :group/member [(d/tempid :db.part/user -1)
+                   (d/tempid :db.part/user -2)
                    (d/tempid :db.part/user -3)]}
 
    {:group/name "Employee Visibility Group"
