@@ -1,5 +1,6 @@
 (ns clojure-west-app.db
-  (:require [datomic.api :as d]))
+  (:require [datomic.api :as d]
+            [clojure-west-app.paws-data :as data]))
 
 (def base-dev-uri "datomic:dev://localhost:4334")
 
@@ -26,3 +27,6 @@
 
 (defn transact-schema [db-name]
   (transact db-name schema-map))
+
+(defn transact-seed-data [db-name]
+  (transact db-name data/seed-data))

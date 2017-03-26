@@ -1,7 +1,7 @@
 (ns clojure-west-app.paws-data
   (:require [datomic.api :as d]))
 
-(def users-and-groups
+(def seed-data
   [{:db/id (d/tempid :db.part/user -1)
     :user/type "public"}
    {:db/id (d/tempid :db.part/user -2)
