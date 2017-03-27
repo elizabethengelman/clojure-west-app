@@ -1,7 +1,5 @@
 # clojure-west-app
 
-FIXME
-
 ## Prerequisites
 
 You will need [Leiningen][] 2.0.0 or above installed.
@@ -9,6 +7,7 @@ You will need [Leiningen][] 2.0.0 or above installed.
 [leiningen]: https://github.com/technomancy/leiningen
 
 
+## Creating the db
 ```
 (require '[clojure-west-app.db :as db])
 (require '[clojure-west-app.query :as query])
