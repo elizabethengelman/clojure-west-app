@@ -9,7 +9,7 @@
 ;============================================
 ;Iteration 1: all in one query
 ;============================================
-(defn first-user->animals
+(defn user->animals1
   ([user db-value]
     (d/q '[:find ?a
            :in $ ?user-type
@@ -61,7 +61,7 @@
   (concat user-type->group-rule
           group->animal-rule))
 
-(defn second-user->animals [user db-value]
+(defn user->animals2 [user db-value]
   (d/q '[:find ?a
          :in $ % ?user-type
          :where
@@ -101,4 +101,4 @@
 (defmethod third-user->animals :special-client [user db-value]
   (special-user->animals user db-value))
 (defmethod third-user->animals :default [user db-value]
-  (second-user->animals user db-value))
+  (user->animals2 user db-value))

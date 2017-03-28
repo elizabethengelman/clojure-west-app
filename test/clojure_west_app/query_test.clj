@@ -24,20 +24,20 @@
   "Path from user to animals is in one query"
   (testing "user->animals"
     (testing "when it is an employee user"
-      (is (= (first-user->animals {:user-type "employee"} (test-db-value))
+      (is (= (user->animals1 {:user-type "employee"} (test-db-value))
              #{[17592186045420] [17592186045421]})))
     (testing "when it is a public user"
-      (is (= (first-user->animals {:user-type "public"} (test-db-value))
+      (is (= (user->animals1 {:user-type "public"} (test-db-value))
              #{[17592186045420]})))))
 
 (deftest iteration-two
   "Refactoring queries into two smaller, more composable queries"
   (testing "user->animals"
     (testing "when it is an employee user"
-      (is (= (second-user->animals {:user-type "employee"} (test-db-value))
+      (is (= (user->animals2 {:user-type "employee"} (test-db-value))
              #{[17592186045420] [17592186045421]})))
     (testing "when it is a public user"
-      (is (= (second-user->animals {:user-type "public"} (test-db-value))
+      (is (= (user->animals2 {:user-type "public"} (test-db-value))
              #{[17592186045420]})))))
 
 (def user-to-animal-tx
