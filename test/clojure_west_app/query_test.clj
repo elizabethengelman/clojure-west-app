@@ -56,15 +56,16 @@
   (let [db (test-db-value)]
     (testing "user->animals for default clients"
       (testing "when it is an employee user"
-        (is (= (third-user->animals {:user-type "employee"} db) #{[17592186045420] [17592186045421]})))
+        (is (= (user->animals3 {:user-type "employee"} db) #{[17592186045420] [17592186045421]})))
       (testing "when it is a public user"
-        (is (= (third-user->animals {:user-type "public"} db) #{[17592186045420]}))))
+        (is (= (user->animals3 {:user-type "public"} db) #{[17592186045420]}))))
 
     (testing "user->animals for Special Client1"
       (testing "when it is an employee user"
-        (is (= (third-user->animals {:user-type "employee"
+        (is (= (user->animals3 {:user-type "employee"
                                      :user-email "dotties_employee@email.com"
-                                     :custom-query :special-client} db) #{[17592186045426] [17592186045420] [17592186045421]})))
+                                     :custom-query :special-client} db)
+               #{[17592186045426] [17592186045420] [17592186045421]})))
       (testing "when it is a public user"
-        (is (= (third-user->animals {:user-type "public"
+        (is (= (user->animals3 {:user-type "public"
                                      :custom-query :special-client} db) #{[17592186045420]}))))))
