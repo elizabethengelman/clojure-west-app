@@ -19,7 +19,7 @@ results of on can be used as an input for the other
    be able to have an association directly to the animal, which still
    respecting the previous path
 
-## Creating the db
+## Creating the dev db
 ```
 (require '[clojure-west-app.db :as db])
 (require '[clojure-west-app.query :as query])
@@ -31,3 +31,14 @@ results of on can be used as an input for the other
 (db/transact-schema "gene-and-louise")
 (db/transact "gene-and-louise" data/seed-data)
 ```
+
+## Creating the test db
+start your transactor: `bin/transactor config/dev-transactor.properties`
+run `cat test-db-setup.clj | lein repl`
+
+
+## Running the specs
+after creating the test db (above), run `lein test`
+
+## To start the console
+` bin/console -p 8080 dev datomic:dev://localhost:4334/`
